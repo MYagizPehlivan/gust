@@ -67,7 +67,7 @@ fn main() -> Result<()> {
     }
 
     // Clean up and exit
-    execute!(stdout(), terminal::LeaveAlternateScreen, terminal::SetSize(orig_w, orig_h))?;
+    execute!(stdout(), terminal::LeaveAlternateScreen, terminal::SetSize(orig_w, orig_h), cursor::Show)?;
     terminal::disable_raw_mode()?;
     Ok(())
 }
