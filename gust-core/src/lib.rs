@@ -12,4 +12,5 @@ impl Game {
     }
 }
 
+pub mod people;
 pub mod util;
