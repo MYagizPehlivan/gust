@@ -5,20 +5,36 @@ use crossterm::{
 };
 use std::io::{stdout, Write};
 
-pub fn draw_main_window(game: &gust_core::Game) -> Result<()> {
-    queue!(stdout(), terminal::Clear(terminal::ClearType::All))?;
+mod log;
 
-    let w = terminal::size()?.0;
-    let h = terminal::size()?.1;
-
-    queue!(stdout(), terminal::SetTitle(format!("Game time: {}", game.time_in_seconds)),)?;
-
-    draw_window(0, 0, w, h).expect("Could not draw main window");
-
-    stdout().flush()
+pub struct Gui {
+    log_window: log::LogWindow,
+    game: gust_core::Game,
 }
 
-pub fn draw_window(x: u16, y: u16, w: u16, h: u16) -> Result<()> {
+impl Gui {
+    pub fn new() -> Self {
+        Self {
+            game: gust_core::Game::new(0),
+            log_window: log::LogWindow::new(),
+        }
+    }
+
+    pub fn draw_main_window(&self) -> Result<()> {
+        queue!(stdout(), terminal::Clear(terminal::ClearType::All))?;
+
+        let w = terminal::size()?.0;
+        let h = terminal::size()?.1;
+
+        draw_window(0, 0, w, h).expect("Could not draw main window");
+
+        self.log_window.draw(&self.game);
+
+        stdout().flush()
+    }
+}
+
+fn draw_window(x: u16, y: u16, w: u16, h: u16) -> Result<()> {
     let window_border_char: &str = "█";
 
     let bg_color = Color::Rgb { r: 10, g: 40, b: 50 };

@@ -3,7 +3,13 @@ pub struct Game {
 }
 
 impl Game {
+    pub fn new(time_in_seconds: u64) -> Self {
+        Self { time_in_seconds }
+    }
+
     pub fn advance_state(&mut self, seconds: u64) {
         self.time_in_seconds += seconds;
     }
 }
+
+pub mod util;

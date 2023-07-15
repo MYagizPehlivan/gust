@@ -5,7 +5,7 @@ use crossterm::{
 };
 use std::io::stdout;
 
-mod display;
+mod windows;
 
 fn main() -> Result<()> {
     let (orig_w, orig_h) = terminal::size()?;
@@ -14,9 +14,9 @@ fn main() -> Result<()> {
     terminal::enable_raw_mode()?;
     execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(128, 48), cursor::Hide)?;
 
-    let game = gust_core::Game { time_in_seconds: 0 };
+    let gui = windows::Gui::new();
 
-    display::draw_main_window(&game)?;
+    gui.draw_main_window()?;
 
     loop {
         match read()? {
@@ -26,7 +26,7 @@ fn main() -> Result<()> {
                 }
             }
             Event::Resize(_new_w, _new_h) => {
-                display::draw_main_window(&game)?;
+                gui.draw_main_window()?;
             }
             _ => {}
         };
