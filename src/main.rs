@@ -1,56 +1,20 @@
 use crossterm::{
     cursor,
     event::{read, Event, KeyCode},
-    execute, queue, style, terminal, Result,
+    execute, terminal, Result,
 };
-use std::io::{stdout, Write};
+use std::io::stdout;
 
-fn draw_window(w: u16, h: u16) -> Result<()> {
-    // let window_border_char: &str = "█";
-    let window_border_char: &str = "#";
-
-    if w < 2 || h < 2 {
-        return Ok(());
-    }
-
-    // Clear the window before starting drawing
-    queue!(
-        stdout(),
-        terminal::SetTitle(format!("w: {}, h: {}", terminal::size()?.0, terminal::size()?.1)),
-        terminal::Clear(terminal::ClearType::All)
-    )?;
-
-    // Draw the top and bottom borders
-    queue!(
-        stdout(),
-        cursor::MoveTo(0, 0),
-        style::Print(str::repeat(window_border_char, w.into())),
-        cursor::MoveTo(0, h - 1),
-        style::Print(str::repeat(window_border_char, w.into())),
-    )?;
-
-    // Draw the left and right vertical borders
-    for y in 1..h - 1 {
-        queue!(
-            stdout(),
-            cursor::MoveTo(0, y),
-            style::Print(window_border_char),
-            cursor::MoveTo(w - 1, y),
-            style::Print(window_border_char),
-        )?;
-    }
-
-    stdout().flush()
-}
+mod display;
 
 fn main() -> Result<()> {
     let (orig_w, orig_h) = terminal::size()?;
 
     // Resize terminal and draw window
     terminal::enable_raw_mode()?;
-    execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(40, 40), cursor::Hide)?;
+    execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(128, 48), cursor::Hide)?;
 
-    draw_window(terminal::size()?.0, terminal::size()?.1)?;
+    display::draw_main_window()?;
 
     loop {
         match read()? {
@@ -59,8 +23,8 @@ fn main() -> Result<()> {
                     break;
                 }
             }
-            Event::Resize(new_w, new_h) => {
-                draw_window(new_w, new_h)?;
+            Event::Resize(_new_w, _new_h) => {
+                display::draw_main_window()?;
             }
             _ => {}
         };
