@@ -1,9 +1,5 @@
-[package]
-name = "gust"
-version = "0.1.0"
-edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-crossterm = "0.26.1"
+[workspace]
+members = ["gust-stormfront", "gust-core"]
+package.license-file = "LICENSE"
+package.authors = ["Mehmet Yağız Pehlivan <m.yagiz.pehlivan@gmail.com>"]
+package.edition = "2021"

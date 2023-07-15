@@ -14,7 +14,9 @@ fn main() -> Result<()> {
     terminal::enable_raw_mode()?;
     execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(128, 48), cursor::Hide)?;
 
-    display::draw_main_window()?;
+    let game = gust_core::Game { time_in_seconds: 0 };
+
+    display::draw_main_window(&game)?;
 
     loop {
         match read()? {
@@ -24,7 +26,7 @@ fn main() -> Result<()> {
                 }
             }
             Event::Resize(_new_w, _new_h) => {
-                display::draw_main_window()?;
+                display::draw_main_window(&game)?;
             }
             _ => {}
         };

@@ -18,7 +18,7 @@
 			"command": "gnome-terminal",
 			"args": [
 				"--",
-				"${workspaceFolder}/target/debug/gust"
+				"${workspaceFolder}/target/debug/gust-stormfront"
 			],
 			"label": "run",
 			"dependsOn": [

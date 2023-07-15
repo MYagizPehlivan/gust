@@ -5,11 +5,13 @@ use crossterm::{
 };
 use std::io::{stdout, Write};
 
-pub fn draw_main_window() -> Result<()> {
+pub fn draw_main_window(game: &gust_core::Game) -> Result<()> {
     queue!(stdout(), terminal::Clear(terminal::ClearType::All))?;
 
     let w = terminal::size()?.0;
     let h = terminal::size()?.1;
+
+    queue!(stdout(), terminal::SetTitle(format!("Game time: {}", game.time_in_seconds)),)?;
 
     draw_window(0, 0, w, h).expect("Could not draw main window");
 
@@ -25,9 +27,6 @@ pub fn draw_window(x: u16, y: u16, w: u16, h: u16) -> Result<()> {
     if w < 2 || h < 2 {
         return Ok(());
     }
-
-    // Clear the window before starting drawing
-    queue!(stdout(), terminal::SetTitle(format!("w: {}, h: {}", terminal::size()?.0, terminal::size()?.1)),)?;
 
     let top_and_bottom_str = str::repeat(window_border_char, w.into());
     let middle_str = String::new() + window_border_char + " ".repeat((w - 2).into()).as_str() + window_border_char;
