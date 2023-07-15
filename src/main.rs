@@ -1,9 +1,9 @@
 use crossterm::{
     cursor,
     event::{read, Event, KeyCode},
-    execute, style, terminal, Result,
+    execute, queue, style, terminal, Result,
 };
-use std::io::stdout;
+use std::io::{stdout, Write};
 
 fn draw_window(w: u16, h: u16) -> Result<()> {
     // let window_border_char: &str = "█";
@@ -14,14 +14,14 @@ fn draw_window(w: u16, h: u16) -> Result<()> {
     }
 
     // Clear the window before starting drawing
-    execute!(
+    queue!(
         stdout(),
         terminal::SetTitle(format!("w: {}, h: {}", terminal::size()?.0, terminal::size()?.1)),
         terminal::Clear(terminal::ClearType::All)
     )?;
 
     // Draw the top and bottom borders
-    execute!(
+    queue!(
         stdout(),
         cursor::MoveTo(0, 0),
         style::Print(str::repeat(window_border_char, w.into())),
@@ -31,7 +31,7 @@ fn draw_window(w: u16, h: u16) -> Result<()> {
 
     // Draw the left and right vertical borders
     for y in 1..h - 1 {
-        execute!(
+        queue!(
             stdout(),
             cursor::MoveTo(0, y),
             style::Print(window_border_char),
@@ -40,7 +40,7 @@ fn draw_window(w: u16, h: u16) -> Result<()> {
         )?;
     }
 
-    Ok(())
+    stdout().flush()
 }
 
 fn main() -> Result<()> {
