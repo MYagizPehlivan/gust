@@ -12,6 +12,19 @@
 				"isDefault": true
 			},
 			"label": "rust: cargo build"
+		},
+		{
+			"type": "shell",
+			"command": "gnome-terminal",
+			"args": [
+				"--",
+				"${workspaceFolder}/target/debug/gust"
+			],
+			"label": "run",
+			"dependsOn": [
+				"rust: cargo build"
+			],
+			"problemMatcher": []
 		}
 	]
 }
