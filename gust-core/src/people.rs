@@ -1,2 +1,2 @@
-pub mod player;
+pub mod person;
 pub mod skills;
