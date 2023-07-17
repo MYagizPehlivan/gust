@@ -10,13 +10,13 @@ mod tui;
 fn main() -> Result<()> {
     let (orig_w, orig_h) = terminal::size()?;
 
-    // Resize terminal and draw window
+    // Resize terminal and draw panel
     terminal::enable_raw_mode()?;
     execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(128, 48), cursor::Hide)?;
 
     let gui = tui::Tui::new();
 
-    gui.draw_main_window()?;
+    gui.draw_main_panel()?;
 
     loop {
         match read()? {
@@ -26,7 +26,7 @@ fn main() -> Result<()> {
                 }
             }
             Event::Resize(_new_w, _new_h) => {
-                gui.draw_main_window()?;
+                gui.draw_main_panel()?;
             }
             _ => {}
         };
