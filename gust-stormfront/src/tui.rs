@@ -28,7 +28,7 @@ impl Tui {
 
         draw_panel(0, 0, w, h).expect("Could not draw main panel");
 
-        self.log_panel.draw(&self.game);
+        self.log_panel.draw(&self.game).expect("Could not draw log panel");
 
         stdout().flush()
     }
