@@ -5,7 +5,7 @@ use crossterm::{
 };
 use std::io::stdout;
 
-mod windows;
+mod tui;
 
 fn main() -> Result<()> {
     let (orig_w, orig_h) = terminal::size()?;
@@ -14,7 +14,7 @@ fn main() -> Result<()> {
     terminal::enable_raw_mode()?;
     execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(128, 48), cursor::Hide)?;
 
-    let gui = windows::Gui::new();
+    let gui = tui::Tui::new();
 
     gui.draw_main_window()?;
 

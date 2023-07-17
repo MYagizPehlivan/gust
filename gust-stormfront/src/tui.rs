@@ -7,12 +7,12 @@ use std::io::{stdout, Write};
 
 mod log;
 
-pub struct Gui {
+pub struct Tui {
     log_window: log::LogWindow,
     game: gust_core::Game,
 }
 
-impl Gui {
+impl Tui {
     pub fn new() -> Self {
         Self {
             game: gust_core::Game::new(0),
