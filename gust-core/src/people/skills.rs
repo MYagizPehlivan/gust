@@ -46,6 +46,7 @@ impl Skill {
 
 pub struct Skillset {
     traveling: Skill,
+    sailing: Skill,
     wind_listening: Skill,
     trading: Skill,
 }
