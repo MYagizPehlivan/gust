@@ -1,23 +1,28 @@
-use crossterm::terminal;
-use gust_core::util::Fractionable;
+use super::{
+    draw_panel,
+    panel::{Panel, PanelDims},
+};
 
-use super::draw_panel;
-
-pub struct LogPanel {
+pub struct Log {
     /// Offset from the end of the log. Hence, 0 means we're displaying
     /// the last line of the log at the bottom of the panel.
     index: u64,
 }
 
-impl LogPanel {
+impl Log {
     pub fn new() -> Self {
         Self { index: 0 }
     }
 
     pub fn draw(&self, game: &gust_core::Game) -> Result<(), std::io::Error> {
-        let game_w = terminal::size()?.0;
-        let game_h = terminal::size()?.1;
-
-        draw_panel(0, 0, game_w.fraction(0.64), game_h)
+        Ok(())
     }
 }
+
+impl super::panel::Panel<Log> {
+    pub fn draw(&self, dims: PanelDims, game: &gust_core::Game) -> Result<(), std::io::Error> {
+        draw_panel(dims.x, dims.y, dims.w, dims.h)
+    }
+}
+
+pub type LogPanel = Panel<Log>;
