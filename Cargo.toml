@@ -1,5 +1,5 @@
 [workspace]
-members = ["gust-stormfront", "gust-core"]
+members = ["gust-core", "gust-front"]
 package.license-file = "LICENSE"
 package.authors = ["Mehmet Yağız Pehlivan <m.yagiz.pehlivan@gmail.com>"]
 package.edition = "2021"
