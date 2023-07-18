@@ -50,3 +50,13 @@ pub struct Skillset {
     wind_listening: Skill,
     trading: Skill,
 }
+impl Skillset {
+    pub fn new() -> Skillset {
+        Self {
+            traveling: Skill::new(1.0, 0.0),
+            sailing: Skill::new(1.0, 0.0),
+            wind_listening: Skill::new(1.0, 0.0),
+            trading: Skill::new(1.0, 0.0),
+        }
+    }
+}

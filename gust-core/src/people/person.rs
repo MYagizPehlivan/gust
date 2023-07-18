@@ -3,10 +3,10 @@ use crate::world::position::Position;
 use super::skills::Skillset;
 
 pub struct Person {
-    name: String,
-    position: Position,
-    money: i64,
-    health: f32,
-    fatigue: f32,
-    skillset: Skillset,
+    pub name: String,
+    pub position: Position,
+    pub money: i64,
+    pub health: f32,
+    pub fatigue: f32,
+    pub skillset: Skillset,
 }
