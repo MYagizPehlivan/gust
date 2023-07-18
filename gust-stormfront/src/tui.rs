@@ -1,28 +1,32 @@
 use crossterm::{
     cursor, execute, queue,
     style::{self, Color},
-    terminal, Result,
+    terminal::{self, SetTitle},
+    Result,
 };
 use gust_core::util::Fractionable;
 use std::io::{stdout, Write};
 
 use self::{
-    log::Log,
-    menu::Menu,
-    panel::{Panel, PanelDims},
+    log::{Log, LogPanel},
+    menu::{Menu, MenuPanel},
+    panel::PanelDims,
+    status::{Status, StatusPanel},
 };
 
 mod log;
 mod menu;
 mod panel;
+mod status;
 
 const BG_COLOR: Color = Color::Rgb { r: 10, g: 40, b: 50 };
 const BORDER_COLOR: Color = Color::Rgb { r: 120, g: 170, b: 200 };
 
 pub struct Tui {
     game: gust_core::Game,
-    log_panel: Panel<Log>,
-    menu_panel: Panel<Menu>,
+    log_panel: LogPanel,
+    menu_panel: MenuPanel,
+    status_panel: StatusPanel,
 }
 
 impl Tui {
@@ -31,8 +35,9 @@ impl Tui {
 
         Self {
             game: gust_core::Game::new(0),
-            log_panel: log::LogPanel { kind: Log::new() },
-            menu_panel: menu::MenuPanel { kind: Menu::new() },
+            log_panel: LogPanel { kind: Log::new() },
+            menu_panel: MenuPanel { kind: Menu::new() },
+            status_panel: StatusPanel { kind: Status {} },
         }
     }
 
@@ -56,17 +61,34 @@ impl Tui {
             )
             .expect("Could not draw log panel");
 
+        let status_h = main_h.fraction(STATUS_PANEL_HEIGHT_FRACTION) + 1;
+        let menu_h = main_h - main_h.fraction(STATUS_PANEL_HEIGHT_FRACTION);
+
+        self.status_panel
+            .draw(
+                PanelDims {
+                    x: main_w.fraction(STATUS_PANEL_WIDTH_FRACTION) - 1,
+                    y: 0,
+                    w: main_w - main_w.fraction(STATUS_PANEL_WIDTH_FRACTION) + 1,
+                    h: status_h,
+                },
+                &self.game,
+            )
+            .expect("Could not draw status panel");
+
         self.menu_panel
             .draw(
                 PanelDims {
                     x: main_w.fraction(LOG_PANEL_WIDTH_FRACTION) - 1,
-                    y: main_h.fraction(MENU_PANEL_HEIGHT_FRACTION),
+                    y: main_h.fraction(STATUS_PANEL_HEIGHT_FRACTION),
                     w: main_w - main_w.fraction(LOG_PANEL_WIDTH_FRACTION) + 1,
-                    h: main_h - main_h.fraction(MENU_PANEL_HEIGHT_FRACTION),
+                    h: menu_h,
                 },
                 &self.game,
             )
             .expect("Could not draw menu panel");
+
+        queue!(stdout(), SetTitle(format!("h: {}, status: {}, menu: {}", main_h, status_h, menu_h))).unwrap();
 
         stdout().flush()
     }
@@ -100,5 +122,5 @@ fn draw_panel(x: u16, y: u16, w: u16, h: u16) -> Result<()> {
 }
 
 const LOG_PANEL_WIDTH_FRACTION: f32 = 0.64;
-const MENU_PANEL_HEIGHT_FRACTION: f32 = 0.50;
+const STATUS_PANEL_HEIGHT_FRACTION: f32 = 0.50;
 const STATUS_PANEL_WIDTH_FRACTION: f32 = 0.82;
