@@ -1,6 +1,6 @@
 use crate::world::position::Position;
 
-use super::skills::Skillset;
+use super::{skills::Skillset, task::Task};
 
 pub struct Person {
     pub name: String,
@@ -9,4 +9,5 @@ pub struct Person {
     pub health: f32,
     pub fatigue: f32,
     pub skillset: Skillset,
+    pub task: Task,
 }

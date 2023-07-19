@@ -20,7 +20,11 @@ impl Panel<Status> {
             cursor::MoveTo(dims.x + 2, dims.y + 2),
             style::Print(game.player.name.to_string()),
             cursor::MoveTo(dims.x + 2, dims.y + 4),
-            style::Print(&game.player.position)
+            style::Print(&game.player.position),
+            cursor::MoveTo(dims.x + 2, dims.y + 6),
+            style::Print(format!("{} silver", &game.player.money)),
+            cursor::MoveTo(dims.x + 2, dims.y + 8),
+            style::Print(&game.player.task),
         )
     }
 }

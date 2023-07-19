@@ -1,4 +1,4 @@
-use people::{person::Person, skills::Skillset};
+use people::{person::Person, skills::Skillset, task::Task::Idle};
 use world::position::Position;
 
 pub struct Game {
@@ -17,6 +17,7 @@ impl Game {
                 health: 100.0,
                 fatigue: 0.0,
                 skillset: Skillset::new(),
+                task: Idle,
             },
         }
     }
