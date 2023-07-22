@@ -8,4 +8,5 @@ authors.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+hexasphere = "9.1.0"
 rand = "0.8.5"

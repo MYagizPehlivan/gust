@@ -3,7 +3,7 @@ use crossterm::{
     event::{read, Event, KeyCode},
     execute, terminal, Result,
 };
-use std::io::stdout;
+use std::{io::stdout, thread, time};
 
 mod tui;
 
@@ -13,6 +13,11 @@ fn main() -> Result<()> {
     // Resize terminal and draw panel
     terminal::enable_raw_mode()?;
     execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(128, 48), cursor::Hide)?;
+
+    // It seems setting the size of a terminal is asynchronous and takes time.
+    // On some platforms, without this sleep, the main window might be drawn
+    // before the new size takes effect.
+    thread::sleep(time::Duration::from_millis(500));
 
     let mut tui = tui::Tui::new();
 

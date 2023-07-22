@@ -1,9 +1,10 @@
 use people::{person::Person, skills::Skillset, task::Task::Idle};
-use world::position::Position;
+use world::{globe::Globe, position::Position};
 
 pub struct Game {
     pub time_in_seconds: u64,
     pub player: Person,
+    pub globe: Globe,
 }
 
 impl Game {
@@ -19,6 +20,7 @@ impl Game {
                 skillset: Skillset::new(),
                 task: Idle,
             },
+            globe: Globe::new(),
         }
     }
 

@@ -10,3 +10,4 @@ authors.workspace = true
 [dependencies]
 gust-core = { path = "../gust-core" }
 crossterm = "0.26.1"
+glam = "0.24.1"
