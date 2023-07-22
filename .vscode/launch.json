@@ -13,40 +13,21 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'gust'",
+            "name": "Debug executable 'gust-front'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=gust",
-                    "--package=gust"
+                    "--bin=gust-front",
+                    "--package=gust-front"
                 ],
                 "filter": {
-                    "name": "gust",
+                    "name": "gust-front",
                     "kind": "bin"
                 }
             },
             "args": [],
             "cwd": "${workspaceFolder}",
             "terminal": "external"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'gust'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=gust",
-                    "--package=gust"
-                ],
-                "filter": {
-                    "name": "gust",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
         }
     ]
 }
