@@ -7,3 +7,5 @@ impl Fractionable for u16 {
         (self as f32 * f) as u16
     }
 }
+
+pub mod stack;
