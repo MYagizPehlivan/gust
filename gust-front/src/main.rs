@@ -14,19 +14,24 @@ fn main() -> Result<()> {
     terminal::enable_raw_mode()?;
     execute!(stdout(), terminal::EnterAlternateScreen, terminal::SetSize(128, 48), cursor::Hide)?;
 
-    let gui = tui::Tui::new();
+    let mut tui = tui::Tui::new();
 
-    gui.draw_main_panel()?;
+    tui.draw_main_panel()?;
 
-    loop {
-        match read()? {
-            Event::Key(key_event) => {
-                if key_event.code == KeyCode::Char('q') {
-                    break;
+    'input_loop: loop {
+        let event = read()?;
+        match event {
+            Event::Key(key_event) => match key_event.code {
+                KeyCode::Char('q') => {
+                    break 'input_loop;
                 }
-            }
+                _ => {
+                    tui.handle_key_event(event);
+                    tui.draw_main_panel()?;
+                }
+            },
             Event::Resize(_new_w, _new_h) => {
-                gui.draw_main_panel()?;
+                tui.draw_main_panel()?;
             }
             _ => {}
         };

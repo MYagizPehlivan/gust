@@ -36,7 +36,9 @@ impl Tui {
         Self {
             game: gust_core::Game::new(0),
             log_panel: LogPanel { kind: Log::new() },
-            menu_panel: MenuPanel { kind: Menu::new() },
+            menu_panel: MenuPanel {
+                kind: Menu::new(vec!["Move".to_string(), "Listen".to_string(), "Rest".to_string()]),
+            },
             status_panel: StatusPanel { kind: Status {} },
         }
     }
@@ -91,6 +93,10 @@ impl Tui {
         queue!(stdout(), SetTitle(format!("h: {}, status: {}, menu: {}", main_h, status_h, menu_h))).unwrap();
 
         stdout().flush()
+    }
+
+    pub fn handle_key_event(&mut self, event: crossterm::event::Event) {
+        self.menu_panel.kind.handle_key_event(event);
     }
 }
 
