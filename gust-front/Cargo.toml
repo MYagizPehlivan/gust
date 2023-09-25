@@ -11,3 +11,4 @@ authors.workspace = true
 gust-core = { path = "../gust-core" }
 crossterm = "0.26.1"
 glam = "0.24.1"
+ndarray = "0.15.6"

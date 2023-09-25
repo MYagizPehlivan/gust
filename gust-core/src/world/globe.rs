@@ -11,7 +11,7 @@ pub struct Globe {
 impl Globe {
     pub fn new() -> Self {
         Self {
-            data: IcoSphere::new(20, |_| Cell { elevation: 0.0 }),
+            data: IcoSphere::new(8, |_| Cell { elevation: 0.0 }),
         }
     }
 }

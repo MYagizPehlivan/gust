@@ -1,5 +1,7 @@
 use crossterm::{
-    cursor, execute, queue,
+    cursor,
+    event::{Event, KeyCode},
+    execute, queue,
     style::{self, Color},
     terminal::{self, SetTitle},
     Result,
@@ -43,7 +45,7 @@ impl Tui {
         }
     }
 
-    pub fn draw_main_panel(&self) -> Result<()> {
+    pub fn draw_main_panel(&mut self) -> Result<()> {
         queue!(stdout(), terminal::Clear(terminal::ClearType::All))?;
 
         let main_w = terminal::size()?.0;
@@ -90,13 +92,24 @@ impl Tui {
             )
             .expect("Could not draw menu panel");
 
-        queue!(stdout(), SetTitle(format!("h: {}, status: {}, menu: {}", main_h, status_h, menu_h))).unwrap();
-
         stdout().flush()
     }
 
     pub fn handle_key_event(&mut self, event: crossterm::event::Event) {
-        self.menu_panel.kind.handle_key_event(event);
+        match event {
+            Event::Key(key_event) => match key_event.code {
+                KeyCode::Char('4') => {
+                    self.log_panel.kind.rotate(-1.0);
+                }
+                KeyCode::Char('6') => {
+                    self.log_panel.kind.rotate(1.0);
+                }
+                _ => {
+                    self.menu_panel.kind.handle_key_event(event);
+                }
+            },
+            _ => {}
+        };
     }
 }
 
